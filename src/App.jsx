@@ -31,9 +31,9 @@ function App() {
   }, [img])
 
   return (
-    <div>
+    <div className='flex flex-col'>
 
-      <form>
+      <form id='image-upload-form'>
         <label htmlFor="image">Image: </label>
         <input id="image" type="file" onChange={handleChange} />
       </form>
