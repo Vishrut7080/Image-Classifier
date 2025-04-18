@@ -2,9 +2,12 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
+let classifier = window.ml5.imageClassifier("MobileNet");
+
 function App() {
 
   const [img, setImg] = useState()
+  const [result, setResult] = useState([])
 
   const imgRef = useRef()
 
@@ -12,13 +15,19 @@ function App() {
     const file = e.target.files[0]
     // to access url of the uploaded image that is stored in browser
     const imgURL = URL.createObjectURL(file)
-    console.log(imgURL)
     setImg(imgURL)
   }
 
-  // hook in react
+  // hook in react for side effects(successive function calling)
   useEffect(() => {
-    console.log(imgRef)
+    // if there is an imnage tag and it has non empty source
+    if (imgRef.current && imgRef.current.src !== "") {
+      classifier.classify(imgRef.current, (result) => {
+        if (result) {
+          setResult(result)
+        }
+      })
+    }
   }, [img])
 
   return (
@@ -33,6 +42,11 @@ function App() {
 
       <div>
         <p>Result: </p>
+        {result.map((r, idx) => {
+          return (
+            <p key={idx}>{r.label} ({(r.confidence * 100).toFixed(2)}%)</p>
+          )
+        })}
       </div>
 
     </div>
