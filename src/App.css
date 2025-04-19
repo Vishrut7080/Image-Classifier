@@ -18,7 +18,7 @@ html {
 #root>div {
     height: 100%;
     width: 100%;
-    background-color: red;
+    background-color: whitesmoke;
     gap: 5rem;
     flex-wrap: wrap;
 }
